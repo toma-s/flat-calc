@@ -1,0 +1,19 @@
+<div class="container">
+  <div *ngIf="mainForm">
+    <form [formGroup]="mainForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Leave a message:</mat-label>
+        <input formControlName="message" matInput type="text">
+      </mat-form-field>
+    </form>
+    <div>
+      <button mat-raised-button (click)="submit()">Submit</button>
+    </div>
+    <div>
+      Output:
+      <li *ngFor="let mm of messages$ | async">
+        {{mm.payload.doc.data() | json}}
+      </li>
+    </div>
+  </div>
+</div>
