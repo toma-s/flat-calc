@@ -1,3 +1,16 @@
+<mat-toolbar color="primary">
+  <div class="logo">
+    <span class="logo--top">🌸🍀🌺</span>
+    <span class="logo--bottom">Nerdy calc</span>
+  </div>
+
+  <a routerLink="/cleaning" routerLinkActive="active">🧼 Cleaning</a>
+  <span>|</span>
+  <a routerLink="/expences" routerLinkActive="active">💸 Expences</a>
+  <span>|</span>
+  <a routerLink="/hoursehold" routerLinkActive="active">🏡 Household list</a>
+</mat-toolbar>
+
 <div class="container">
   <div *ngIf="mainForm">
     <form [formGroup]="mainForm">
@@ -17,3 +30,5 @@
     </div>
   </div>
 </div>
+
+<app-cleaning></app-cleaning>

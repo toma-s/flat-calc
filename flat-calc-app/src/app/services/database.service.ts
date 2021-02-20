@@ -34,10 +34,23 @@ export class DatabaseService {
         return this.firestore.collection("messages").snapshotChanges();
     }
 
+    getServices() {
+        return this.firestore.collection("services").snapshotChanges();
+    }
+
     putMessage(data: {}) {
         return new Promise<any>((resolve, reject) =>{
             this.firestore
                 .collection("messages")
+                .add(data)
+                .then(res => {}, err => reject(err));
+        });
+    }
+
+    putService(data: {}) {
+        return new Promise<any>((resolve, reject) =>{
+            this.firestore
+                .collection("services")
                 .add(data)
                 .then(res => {}, err => reject(err));
         });

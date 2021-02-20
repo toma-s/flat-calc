@@ -1,0 +1,36 @@
+<p>cleaning works!</p>
+
+
+<div class="container">
+    
+    <div class="row">
+        <h1>Add service</h1>
+        <div *ngIf="newServiceForm">
+            <form [formGroup]="newServiceForm">
+                <mat-form-field appearance="fill">
+                    <mat-label>Add new cleaning service:</mat-label>
+                    <input formControlName="name" matInput type="text">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Some optional details:</mat-label>
+                    <input formControlName="comment" matInput type="text">
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Points:</mat-label>
+                    <input formControlName="points" matInput type="number">
+                </mat-form-field>
+            </form>
+            <div>
+                <button mat-raised-button (click)="submit()">Submit</button>
+            </div>
+        </div>
+
+        <h2>Services:</h2>
+        <div>
+            <li *ngFor="let s of services$ | async">
+                {{s.payload.doc.data() | json}}
+            </li>
+        </div>
+    </div>
+
+</div>

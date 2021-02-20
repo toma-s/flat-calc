@@ -17,6 +17,13 @@ export class AppComponent implements OnInit {
 
   messages$: Observable<any>;
 
+  sections: [
+    { name: '🧼', value: 'cleaning'},
+    { name: '💸', value: 'expences'},
+    { name: '🏡', value: 'hoursehold'},
+  ];
+  
+
   constructor(
     private databaseService: DatabaseService
   ) {
@@ -38,5 +45,9 @@ export class AppComponent implements OnInit {
   submit() {
     this.databaseService.putMessage({message: this.mainForm?.get('message')?.value}).then((data) => console.log(data)).catch((err) => console.log(err));
     this.messages$ = this.databaseService.getMessages();
+  }
+
+  goTo(sectionName: string) {
+
   }
 }

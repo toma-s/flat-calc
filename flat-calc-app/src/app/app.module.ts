@@ -13,10 +13,19 @@ import { DatabaseService } from './services/database.service';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { CleaningComponent } from './components/cleaning/cleaning.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import { ExpencesComponent } from './components/expences/expences.component';
+import { HouseholdComponent } from './components/household/household.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CleaningComponent,
+    ExpencesComponent,
+    HouseholdComponent,
+    NotFoundComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -30,6 +39,7 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
     MatCheckboxModule,
     MatRadioModule,
     MatInputModule,
+    MatToolbarModule,
   ],
   providers: [
     DatabaseService
