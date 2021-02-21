@@ -3,6 +3,8 @@ import { AngularFirestore } from "@angular/fire/firestore";
 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
+import { Observable } from "rxjs";
+import { Services } from "../types/database-models";
 
 @Injectable({
     providedIn: 'root',
@@ -34,7 +36,7 @@ export class DatabaseService {
         return this.firestore.collection("messages").snapshotChanges();
     }
 
-    getServices() {
+    getServices(): Observable<any[]> {
         return this.firestore.collection("services").snapshotChanges();
     }
 

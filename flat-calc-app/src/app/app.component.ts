@@ -4,6 +4,7 @@ import { DatabaseService } from './services/database.service';
 
 import firebase from "firebase/app";
 import { Observable } from 'rxjs';
+import { Section, SectionType } from './types/sections';
 
 @Component({
   selector: 'app-root',
@@ -17,11 +18,13 @@ export class AppComponent implements OnInit {
 
   messages$: Observable<any>;
 
-  sections: [
-    { name: '🧼', value: 'cleaning'},
-    { name: '💸', value: 'expences'},
-    { name: '🏡', value: 'hoursehold'},
+  sections: SectionType[] = [
+    { name: '🧼', value: 'Cleaning'},
+    { name: '💸', value: 'Expences'},
+    { name: '🏡', value: 'Household list'},
   ];
+
+  currentSection: Section = 'Cleaning';
   
 
   constructor(
@@ -47,7 +50,7 @@ export class AppComponent implements OnInit {
     this.messages$ = this.databaseService.getMessages();
   }
 
-  goTo(sectionName: string) {
-
+  setSection(section: Section) {
+    this.currentSection = section;
   }
 }

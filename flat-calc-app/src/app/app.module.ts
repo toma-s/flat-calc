@@ -18,6 +18,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { ExpencesComponent } from './components/expences/expences.component';
 import { HouseholdComponent } from './components/household/household.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -40,6 +44,10 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     MatRadioModule,
     MatInputModule,
     MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatTableModule,
   ],
   providers: [
     DatabaseService

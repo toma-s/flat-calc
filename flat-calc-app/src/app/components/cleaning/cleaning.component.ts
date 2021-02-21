@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DatabaseService } from 'src/app/services/database.service';
+import { Services } from 'src/app/types/database-models';
 
 @Component({
   selector: 'app-cleaning',
@@ -12,6 +13,7 @@ export class CleaningComponent implements OnInit {
 
   newServiceForm: FormGroup;
   services$: Observable<any>;
+  displayedColumns = ['name', 'details', 'points'];
 
   constructor(
     private databaseService: DatabaseService

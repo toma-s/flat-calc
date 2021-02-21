@@ -5,12 +5,7 @@ import { ExpencesComponent } from './components/expences/expences.component';
 import { HouseholdComponent } from './components/household/household.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
-const routes: Routes = [
-  { path: 'cleaning', component: CleaningComponent },
-  { path: 'expences', component: ExpencesComponent },
-  { path: 'household', component: HouseholdComponent },
-  { path: 'not-found', component: NotFoundComponent },
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

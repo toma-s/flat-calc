@@ -1,34 +1,19 @@
 <mat-toolbar color="primary">
-  <div class="logo">
-    <span class="logo--top">🌸🍀🌺</span>
-    <span class="logo--bottom">Nerdy calc</span>
-  </div>
-
-  <a routerLink="/cleaning" routerLinkActive="active">🧼 Cleaning</a>
-  <span>|</span>
-  <a routerLink="/expences" routerLinkActive="active">💸 Expences</a>
-  <span>|</span>
-  <a routerLink="/hoursehold" routerLinkActive="active">🏡 Household list</a>
+  <span>🌸🍀🌺</span>
+  <span>Nerdy calc</span>
 </mat-toolbar>
 
-<div class="container">
-  <div *ngIf="mainForm">
-    <form [formGroup]="mainForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Leave a message:</mat-label>
-        <input formControlName="message" matInput type="text">
-      </mat-form-field>
-    </form>
-    <div>
-      <button mat-raised-button (click)="submit()">Submit</button>
-    </div>
-    <div>
-      Output:
-      <li *ngFor="let mm of messages$ | async">
-        {{mm.payload.doc.data() | json}}
-      </li>
-    </div>
-  </div>
-</div>
-
-<app-cleaning></app-cleaning>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <mat-list-item *ngFor="let section of sections" (click)="setSection(section.value)">
+        <span>{{section.name}} {{section.value}}</span>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-cleaning *ngIf="currentSection === 'Cleaning'"></app-cleaning>
+    <app-expences *ngIf="currentSection === 'Expences'"></app-expences>
+    <app-household *ngIf="currentSection === 'Household list'"></app-household>
+  </mat-sidenav-content>
+</mat-sidenav-container>
