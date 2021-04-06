@@ -4,7 +4,7 @@ import { DatabaseService } from './services/database.service';
 
 import firebase from "firebase/app";
 import { Observable } from 'rxjs';
-import { Section, SectionType } from './types/sections';
+import { Section, SectionType } from './models/sections';
 
 @Component({
   selector: 'app-root',

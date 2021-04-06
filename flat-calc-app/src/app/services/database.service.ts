@@ -1,10 +1,15 @@
-import { Inject, Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
-
 // Firebase App (the core Firebase SDK) is always required and must be listed first
-import firebase from "firebase/app";
-import { Observable } from "rxjs";
-import { Services } from "../types/database-models";
+import firebase from 'firebase/app';
+
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+
+import { uniq } from "lodash";
+import { Observable, combineLatest, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+import { CompletedService, CompletedServiceJoinNeighbors, Neighbor, Service } from '../models/database-models';
+import { firebaseConfig } from 'src/environments/firebase-config';
 
 @Injectable({
     providedIn: 'root',
@@ -16,45 +21,151 @@ export class DatabaseService {
     ) { }
 
     initializeDB() {
-        // Set the configuration for your app
-        const firebaseConfig = {
-            apiKey: "AIzaSyCaN6DKKOIVP0tQbkg5up2TJdTw18HTtBQ",
-            authDomain: "flatcalc-22be6.firebaseapp.com",
-            databaseURL: "https://flatcalc-22be6-default-rtdb.firebaseio.com",
-            projectId: "flatcalc-22be6",
-            storageBucket: "flatcalc-22be6.appspot.com",
-            messagingSenderId: "568952496390",
-            appId: "1:568952496390:web:b004c78f49ad15e20bbe87"
-        };
         firebase.initializeApp(firebaseConfig);
+    }
 
-        // Get a reference to the database service
-        // return firebase.database();
+    getNeighbors(): Observable<Neighbor[]> {
+        return this.firestore.collection('neighbors').snapshotChanges().pipe(
+            map((data: any[]) => data.map((d: any) => {
+                console.log(d);
+                return this.mapToNeighbor(d.payload.doc);
+            }))
+        );
     }
 
     getMessages() {
-        return this.firestore.collection("messages").snapshotChanges();
+        return this.firestore.collection('messages').snapshotChanges();
     }
 
-    getServices(): Observable<any[]> {
-        return this.firestore.collection("services").snapshotChanges();
+    getCompletedServicesJoinNeighbors(): Observable<CompletedServiceJoinNeighbors[]> {
+        return this.firestore.collection<CompletedService>('completedServices').valueChanges()
+            .pipe(
+                switchMap(completedServices => {
+                    const neighborIds = uniq(completedServices.map(cs => cs.neighborId))
+
+                    return combineLatest(
+                        of(completedServices),
+                        combineLatest(
+                            neighborIds.map(neighborId =>
+                                this.firestore.collection<Neighbor>('neighbors', ref => ref.where('id', '==', neighborId)).valueChanges().pipe(
+                                    map(neighbors => neighbors[0])
+                                )
+                            )
+                        )
+                    )
+                }),
+                map(([completedServices, neighbors]) => {
+                    return completedServices.map(completedService => {
+                        console.log(completedService);
+                        console.log(neighbors);
+
+                        return {
+                            ...completedService,
+                            neighbor: neighbors.find(a => {
+                                console.log(a);
+
+                                return a.id === completedService.neighborId;
+                            }),
+                        }
+                    })
+                })
+            );
+    }
+
+    getServicesList(): Observable<Service[]> {
+        return this.firestore.collection('services').snapshotChanges().pipe(
+            map((data: any[]) => data.map((d: any) => {
+                console.log(d);
+                return this.mapToService(d.payload.doc);
+            }))
+        );
+    }
+
+    mapToService(payload: any): Service {
+        return {
+            id: payload.id,
+            title: payload.data().title,
+            details: payload.data().details,
+            points: payload.data().points,
+        }
+    }
+
+    mapToCompletedService(payload: any): CompletedService {
+        return {
+            id: payload.id,
+            title: payload.data().title,
+            neighborId: payload.data().neighborId,
+            comment: payload.data().comment,
+            dateCompleted: payload.data().dateCompleted,
+            dateCreated: payload.data().dateCreated,
+            points: payload.data().points,
+        }
+    }
+
+    mapToNeighbor(payload: any): Neighbor {
+        return {
+            id: payload.id,
+            name: payload.data().name,
+        }
     }
 
     putMessage(data: {}) {
-        return new Promise<any>((resolve, reject) =>{
+        return new Promise<any>((resolve, reject) => {
             this.firestore
-                .collection("messages")
+                .collection('messages')
                 .add(data)
-                .then(res => {}, err => reject(err));
+                .then(res => { }, err => reject(err));
         });
     }
 
-    putService(data: {}) {
-        return new Promise<any>((resolve, reject) =>{
+    putService(data: Service) {
+        return new Promise<any>((resolve, reject) => {
             this.firestore
-                .collection("services")
+                .collection('services')
                 .add(data)
-                .then(res => {}, err => reject(err));
+                .then(res => { }, err => reject(err));
+        });
+    }
+
+    putCompletedService(data: CompletedService) {
+        const id = this.firestore.createId();
+        data.id = id;
+
+        return new Promise<any>((resolve, reject) => {
+            this.firestore
+                .doc(`completedServices/${id}`)
+                .set(data)
+                .then(res => { }, err => console.log(err));
+        });
+    }
+
+    deleteService(id: string) {
+        return new Promise<any>((resolve, reject) => {
+            this.firestore
+                .collection('services')
+                .doc(id)
+                .delete()
+                .then(res => { }, err => console.log(err));
+        });
+    }
+
+    deleteCompletedService(id: string) {
+        return new Promise<any>((resolve, reject) => {
+            this.firestore
+                .collection('completedServices')
+                .doc(id)
+                .delete()
+                .then(res => { }, err => console.log(err));
+        });
+    }
+
+    updateService(id: string, newData: {}) {
+        return new Promise<any>((resolve, reject) => {
+            this.firestore
+                .collection('services')
+                .doc(id)
+                .update(newData)
+                .then(res => { }, err => reject(err));
         });
     }
 

@@ -1,1 +1,3 @@
 flat-calc-app/src/environments/firebase-config.ts
+flat-calc-app/.firebaserc
+flat-calc-app/firebase.json

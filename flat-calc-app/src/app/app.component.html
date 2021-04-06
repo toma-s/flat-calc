@@ -3,7 +3,7 @@
   <span>Nerdy calc</span>
 </mat-toolbar>
 
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container>
   <mat-sidenav mode="side" opened>
     <mat-nav-list>
       <mat-list-item *ngFor="let section of sections" (click)="setSection(section.value)">
@@ -12,8 +12,10 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-cleaning *ngIf="currentSection === 'Cleaning'"></app-cleaning>
-    <app-expences *ngIf="currentSection === 'Expences'"></app-expences>
-    <app-household *ngIf="currentSection === 'Household list'"></app-household>
+    <div class="container">
+      <app-cleaning *ngIf="currentSection === 'Cleaning'"></app-cleaning>
+      <app-expences *ngIf="currentSection === 'Expences'"></app-expences>
+      <app-household *ngIf="currentSection === 'Household list'"></app-household>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -14,14 +14,19 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { CleaningComponent } from './components/cleaning/cleaning.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { ExpencesComponent } from './components/expences/expences.component';
 import { HouseholdComponent } from './components/household/household.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatButtonModule} from '@angular/material/button';
-import {MatTableModule} from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { UpdateServiceModalComponent } from './components/cleaning/update-service-modal/update-service-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import {MatTableModule} from '@angular/material/table';
     CleaningComponent,
     ExpencesComponent,
     HouseholdComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    UpdateServiceModalComponent
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -38,8 +44,9 @@ import {MatTableModule} from '@angular/material/table';
     BrowserModule,
     AppRoutingModule,
     NoopAnimationsModule,
-    MatFormFieldModule,
     ReactiveFormsModule,
+
+    MatFormFieldModule,
     MatCheckboxModule,
     MatRadioModule,
     MatInputModule,
@@ -48,6 +55,10 @@ import {MatTableModule} from '@angular/material/table';
     MatListModule,
     MatButtonModule,
     MatTableModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
     DatabaseService
