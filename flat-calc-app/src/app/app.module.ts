@@ -27,6 +27,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     ExpencesComponent,
     HouseholdComponent,
     NotFoundComponent,
-    UpdateServiceModalComponent
+    UpdateServiceModalComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
@@ -59,6 +62,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCardModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [
     DatabaseService
