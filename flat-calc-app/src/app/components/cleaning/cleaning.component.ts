@@ -22,8 +22,11 @@ export class CleaningComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator)
   completedServicePaginator: MatPaginator;
 
-  @ViewChild(MatSort) 
+  @ViewChild('completedServiceSort', { read: MatSort, static: true }) 
   completedServiceSort: MatSort;
+
+  @ViewChild('existingServiceSort', { read: MatSort, static: true }) 
+  existingServiceSort: MatSort;
 
   newCompletedServiceForm: FormGroup = new FormGroup({});
   newServiceForm: FormGroup = new FormGroup({});
@@ -67,7 +70,10 @@ export class CleaningComponent implements OnInit, AfterViewInit {
       this.completedServicesDataSource.paginator = this.completedServicePaginator;
       this.completedServicesDataSource.sort = this.completedServiceSort;
     })
-    this.existingServices$.subscribe((data) => this.existingServicesDataSource = new MatTableDataSource<Service>(data))
+    this.existingServices$.subscribe((data) => {
+      this.existingServicesDataSource = new MatTableDataSource<Service>(data);
+      this.existingServicesDataSource.sort = this.existingServiceSort;
+    })
 
     this.completedServices$.subscribe((data) => console.log(data));
     this.existingServices$.subscribe((data) => console.log(data));
@@ -76,6 +82,7 @@ export class CleaningComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.completedServicesDataSource.paginator = this.completedServicePaginator;
     this.completedServicesDataSource.sort = this.completedServiceSort;
+    this.existingServicesDataSource.sort = this.existingServiceSort;
   }
 
   addService() {

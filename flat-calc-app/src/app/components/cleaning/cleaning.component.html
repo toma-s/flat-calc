@@ -3,7 +3,7 @@
     <h1>Completed services</h1>
 
 
-    <table [hidden]="!completedServicesDataSource" matSort mat-table [dataSource]="completedServicesDataSource"
+    <table [hidden]="!completedServicesDataSource" #completedServiceSort matSort mat-table [dataSource]="completedServicesDataSource"
         class="mat-elevation-z8">
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> What </th>
@@ -116,10 +116,10 @@
 
     <h2>Services</h2>
 
-    <table [hidden]="!existingServicesDataSource" mat-table [dataSource]="existingServicesDataSource"
+    <table [hidden]="!existingServicesDataSource" mat-table #existingServiceSort matSort [dataSource]="existingServicesDataSource"
         class="mat-elevation-z8">
         <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
             <td mat-cell *matCellDef="let element"> {{element.title}}</td>
         </ng-container>
 
@@ -131,7 +131,7 @@
         </ng-container>
 
         <ng-container matColumnDef="points">
-            <th mat-header-cell *matHeaderCellDef> Points </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Points </th>
             <td mat-cell *matCellDef="let element"> {{element.points}} </td>
         </ng-container>
 
