@@ -8,7 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, of } from 'rxjs';
 
 import { DatabaseService } from 'src/app/services/database.service';
-import { CompletedService, CompletedServiceJoinNeighbors, Neighbor, Service } from 'src/app/models/database-models';
+import { CompletedService, CompletedServiceJoinNeighbors, Neighbor, NeighborPoints, Service } from 'src/app/models/database-models';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
@@ -33,6 +33,7 @@ export class CleaningComponent implements OnInit, AfterViewInit {
   existingServices$: Observable<Service[]> = of();
   completedServices$: Observable<CompletedServiceJoinNeighbors[]> = of();
   neighbors$: Observable<Neighbor[]> = of();
+  neighborsWithPoints$: Observable<NeighborPoints[]> = of();
 
   displayedExistingServiceColumns = ['title', 'details', 'points', /*'update',*/ 'delete'];
   displayedCompletedServicesColumns = ['title', 'name', 'dateCompleted', 'dateCreated', 'comment', 'points', /*'update',*/ 'delete'];
@@ -64,6 +65,7 @@ export class CleaningComponent implements OnInit, AfterViewInit {
     this.completedServices$ = this.databaseService.getCompletedServicesJoinNeighbors();
     this.existingServices$ = this.databaseService.getServicesList();
     this.neighbors$ = this.databaseService.getNeighbors();
+    this.neighborsWithPoints$ = this.databaseService.getNeighborsWithPoints();
 
     this.completedServices$.subscribe((data) => {
       this.completedServicesDataSource = new MatTableDataSource<CompletedServiceJoinNeighbors>(data);
@@ -75,8 +77,8 @@ export class CleaningComponent implements OnInit, AfterViewInit {
       this.existingServicesDataSource.sort = this.existingServiceSort;
     })
 
-    this.completedServices$.subscribe((data) => console.log(data));
-    this.existingServices$.subscribe((data) => console.log(data));
+    // this.completedServices$.subscribe((data) => console.log(data));
+    // this.existingServices$.subscribe((data) => console.log(data));
   }
 
   ngAfterViewInit(): void {

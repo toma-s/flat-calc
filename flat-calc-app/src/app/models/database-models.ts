@@ -7,9 +7,9 @@ export interface Service {
 
 export interface CompletedService {
     id?: string;
-    title: string;
+    title: string; // Service
     neighborId: string;
-    neighborName?: string;
+    neighborName?: string; // delete?
     dateCreated?: string | null;
     dateCompleted?: string | null;
     comment: string;
@@ -21,6 +21,8 @@ export interface Neighbor {
     name: string;
 }
 
+// combined
+
 export interface CompletedServiceJoinNeighbors {
     id?: string;
     title: string;
@@ -29,4 +31,9 @@ export interface CompletedServiceJoinNeighbors {
     dateCompleted?: string | null;
     comment: string;
     points?: string;
+}
+
+export interface NeighborPoints {
+    neighbor: Neighbor;
+    points: number;
 }

@@ -1,10 +1,19 @@
-<div class="my-4">
+<div class="my-5">
 
     <h1>Completed services</h1>
 
+    <h2>Statistics</h2>
 
-    <table [hidden]="!completedServicesDataSource" #completedServiceSort matSort mat-table [dataSource]="completedServicesDataSource"
-        class="mat-elevation-z8">
+    <mat-card class="my-3">
+        <mat-list>
+            <mat-list-item *ngFor="let neighbor of (neighbors$ | async)">
+                {{neighbor.name}}
+            </mat-list-item>
+        </mat-list>
+    </mat-card>
+
+    <table #completedServiceSort mat-table matSort [hidden]="!completedServicesDataSource"
+        [dataSource]="completedServicesDataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> What </th>
             <td mat-cell *matCellDef="let element"> {{element.title}} </td>
@@ -116,8 +125,8 @@
 
     <h2>Services</h2>
 
-    <table [hidden]="!existingServicesDataSource" mat-table #existingServiceSort matSort [dataSource]="existingServicesDataSource"
-        class="mat-elevation-z8">
+    <table #existingServiceSort mat-table matSort [hidden]="!existingServicesDataSource"
+        [dataSource]="existingServicesDataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
             <td mat-cell *matCellDef="let element"> {{element.title}}</td>
