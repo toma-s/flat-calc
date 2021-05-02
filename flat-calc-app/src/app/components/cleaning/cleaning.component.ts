@@ -8,7 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, of } from 'rxjs';
 
 import { DatabaseService } from 'src/app/services/database.service';
-import { CompletedService, CompletedServiceJoinNeighbors, Neighbor, NeighborPoints, Service } from 'src/app/models/database-models';
+import { CompletedService, Neighbor, Service } from 'src/app/models/database-models';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
@@ -31,15 +31,14 @@ export class CleaningComponent implements OnInit, AfterViewInit {
   newCompletedServiceForm: FormGroup = new FormGroup({});
   newServiceForm: FormGroup = new FormGroup({});
   existingServices$: Observable<Service[]> = of();
-  completedServices$: Observable<CompletedServiceJoinNeighbors[]> = of();
-  neighbors$: Observable<Neighbor[]> = of();
-  neighborsWithPoints$: Observable<NeighborPoints[]> = of();
+  completedServices$: Observable<CompletedService[]> = of();
+  neighbors$: Observable<Neighbor[]> = of();;
 
   displayedExistingServiceColumns = ['title', 'details', 'points', /*'update',*/ 'delete'];
   displayedCompletedServicesColumns = ['title', 'name', 'dateCompleted', 'dateCreated', 'comment', 'points', /*'update',*/ 'delete'];
 
   existingServicesDataSource: MatTableDataSource<Service> = new MatTableDataSource();
-  completedServicesDataSource: MatTableDataSource<CompletedServiceJoinNeighbors> = new MatTableDataSource();
+  completedServicesDataSource: MatTableDataSource<CompletedService> = new MatTableDataSource();
 
 
   constructor(
@@ -50,8 +49,7 @@ export class CleaningComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.newCompletedServiceForm = new FormGroup({
-      title: new FormControl('', Validators.required),
-      neighbor: new FormControl('', Validators.required),
+      neighbor: new FormControl({}, Validators.required),
       dateCreated: new FormControl(new Date(), Validators.required),
       dateCompleted: new FormControl(new Date(), Validators.required),
       comment: new FormControl(''),
@@ -62,13 +60,12 @@ export class CleaningComponent implements OnInit, AfterViewInit {
       details: new FormControl(''),
     });
 
-    this.completedServices$ = this.databaseService.getCompletedServicesJoinNeighbors();
+    this.completedServices$ = this.databaseService.getCompletedServices();
     this.existingServices$ = this.databaseService.getServicesList();
     this.neighbors$ = this.databaseService.getNeighbors();
-    this.neighborsWithPoints$ = this.databaseService.getNeighborsWithPoints();
 
     this.completedServices$.subscribe((data) => {
-      this.completedServicesDataSource = new MatTableDataSource<CompletedServiceJoinNeighbors>(data);
+      this.completedServicesDataSource = new MatTableDataSource<CompletedService>(data);
       this.completedServicesDataSource.paginator = this.completedServicePaginator;
       this.completedServicesDataSource.sort = this.completedServiceSort;
     })
@@ -99,13 +96,15 @@ export class CleaningComponent implements OnInit, AfterViewInit {
   }
 
   addCompletedService() {
+    console.log(this.newCompletedServiceForm?.get('service'));
+    console.log(this.newCompletedServiceForm?.get('service')?.value);
+    
     this.databaseService
       .putCompletedService({
-        title: this.newCompletedServiceForm?.get('title')?.value.title,
-        neighborId: this.newCompletedServiceForm?.get('neighbor')?.value.id,
+        service: this.newCompletedServiceForm?.get('service')?.value,
+        neighbor: this.newCompletedServiceForm?.get('neighbor')?.value,
         dateCreated: this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
         dateCompleted: this.datePipe.transform(this.newCompletedServiceForm?.get('dateCompleted')?.value, 'yyyy-MM-dd'),
-        points: this.newCompletedServiceForm?.get('title')?.value.points,
         comment: this.newCompletedServiceForm?.get('comment')?.value,
       } as CompletedService)
       .then((data) => console.log(data))
